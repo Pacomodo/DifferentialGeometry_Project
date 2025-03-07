@@ -1,0 +1,574 @@
+\documentclass[25pt,portrait]{tikzposter}
+\geometry{paperwidth=35.43in, paperheight=47.24in}
+\usetheme{Autumn}
+\colorlet{backgroundcolor}{black!20!white}
+\colorlet{titlebgcolor}{blue!20!teal!90!black}
+\colorlet{blocktitlefgcolor}{blue!20!teal!90!black}
+\usepackage[utf8]{inputenc}
+\usepackage{kotex}[hangul]
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{mathtools}
+\usepackage{qrcode}
+\usepackage{hyperref}
+\renewcommand{\baselinestretch}{1.15}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{tikz}
+\tikzposterlatexaffectionproofoff
+
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\csch}{csch}
+
+\title{\parbox{0.95\linewidth}{\centering \scalebox{1.5}[1.5]{\textbf{쌍곡 기하와 Lorentz 공간 간의 관계와 그 활용}}}}
+
+\setlength{\tabcolsep}{2em}
+\author{
+\begin{tabular}{ c | c | c | c}
+\textbf{2018160005}   &   \textbf{2020160027}
+&   \textbf{2022160012}   &   \textbf{2022160025}\\
+\textbf{임윤상}   &   \textbf{박예영}   &  \textbf{박세준}   &  \textbf{김상준}
+\end{tabular}%
+}
+
+%\institute
+%{
+%\textbf{Author Name:}\\
+%\textbf{affiliation:}
+%}
+
+\usepackage[many]{tcolorbox}
+\tcbset{
+  enhanced,title=Name, coltitle=black,attach boxed title to top left={xshift=-5mm,yshift=-10mm},
+  boxed title style={colframe=black!70,outer arc=0pt,arc=0pt,colback=gray!50, scale=1.2, top=.3em, bottom=.3em, boxrule=.10cm},
+  outer arc=.4em,arc=.3em,colframe=black,colback=white, fontupper=\linespread{1}\selectfont,
+  fonttitle=\large\sffamily, boxrule=.2cm, boxsep=1.3em, before skip=.5em, bottom=-.5em
+}
+
+\makeatletter
+\newcommand{\DrawLine}{
+\begin{tikzpicture}
+\path[use as bounding box] (0,-.5em) -- (\linewidth,.5em);
+\draw[color=black!70,dashed,dash phase=2pt,ultra thick]
+    (0-\kvtcb@leftlower-\kvtcb@boxsep,0)--
+    (\linewidth+\kvtcb@rightlower+\kvtcb@boxsep,0);
+\end{tikzpicture}
+}
+\makeatother
+
+
+\makeatletter
+\setlength{\TP@visibletextwidth}{\textwidth-2\TP@innermargin}
+\setlength{\TP@visibletextheight}{\textheight-2\TP@innermargin}
+\makeatother
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.15}
+
+\begin{document}
+
+
+% <안내사항>======================================
+% 항목의 변경, 추가가 가능합니다.
+% 발표자 이름 옆에는 * 표시를 해주시기 바랍니다.
+% ==============================================
+\maketitle[width=\textwidth]
+
+\begin{columns}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%             첫 얼 : 비유클리드 기하학과 쌍곡평면               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\column{0.3}
+\block{새로운 기하}{%
+%
+유클리드가 주장한 5가지 공준은 다음과 같다.
+\setlength{\leftmargini}{1.5em}
+\begin{enumerate}
+\item 서로 다른 두 점이 주어졌을 때, 그 두 점을 잇는 직선을 그을 수 있다.
+\item 임의의 선분은 더 연장할 수 있다.
+\item 서로 다른 두 점 $A, B$에 대해, 점 $A$를 중심으로 하고 $\overline{AB}$를 한 반지름으로 하는 원을 그릴 수 있다.
+\item 모든 직각은 서로 같다.
+\item[5.] \textbf{두 직선이 한 직선과 만날 때, 같은 쪽에 있는 내각의 합이 2직각(180˚)보다 작으면 이 두 직선을 연장할 때 2직각보다 작은 내각을 이루는 쪽에서 반드시 만난다.}
+\end{enumerate}
+\setlength{\leftmargini}{1em}
+이는 ``평행선 공준''이라 불리며 나머지 공준과 독립임이 밝혀졌다. 이로부터 비롯된 기하 중 하나인 쌍곡기하(hyperbolic geometry)의 성질들을 살펴보고 더 나아가 Lorentz 평면,공간과 그 관계, 그리고 그 활용으로 특수 상대성 이론에 대해 알아보고자 한다.
+}%
+%
+%
+%
+\block{쌍곡 평면의 여러가지 성질들}{
+다음을 만족하는 평면의 성질을 살펴보자.
+\[
+\mathcal{U}=\{(u,v)\in\mathbb{R}^2~:~v>0\}~,~~
+E=\frac{1}{v^2},~F=0,~G=\frac{1}{v^2}
+\]
+\begin{tcolorbox}[title=~~쌍곡평면의 geodesic~~\null]
+geodesic을 만족하기 위한 두 조건으로부터 다음을 알 수 있다.
+\begin{align*}
+\null&\frac{d}{dt}(E\dot{u}+F\dot{v})=\frac{1}{2}(E_u\dot{u}^2+2F_u\dot{u}\dot{v}+G_u\dot{v}^2)\\
+\to~&~%
+\frac{d}{dt}(E\dot{u})~=~\frac{2}{v^3}\dot{u}\dot{v}+\frac{1}{v^2}\Ddot{u}=0
+\end{align*}%
+\begin{align*}
+\null&\frac{d}{dt}(F\dot{u}+G\dot{v})=\frac{1}{2}(E_v\dot{u}^2+2F_v\dot{u}\dot{v}+G_v\dot{v}^2)\\
+\to~&~%
+\frac{d}{dt}(G\dot{v})~=~\frac{2}{v^3}\dot{v}^2+\frac{1}{v^2}\Ddot{v}=-\frac{2}{2v^3}(\dot{u}^2+\dot{v}^2)\\
+\to~&~%
+\frac{1}{v^3}(\dot{u}^2-\dot{v}^2)+\frac{1}{v^2}\Ddot{v}=0
+\end{align*}
+이후 식 정리를 통해 $y$축과 평행한 반직선과 중심이 $x$축에 있는 반원이 geodesic임을 알 수 있다.
+\end{tcolorbox}%
+%
+\null\vskip 1em%
+%
+\begin{tcolorbox}[title=~~쌍곡평면의 거리 및 각도~~\null]
+geodesic 위의 두 점에 대한 거리를 알아보자.
+\begin{enumerate}
+\item $u$ 좌표가 동일할 때: $\gamma(u(t),v(t))=(u_0,t)$\[
+\!\!\!\!\!s(t)=\int_{t_0}^{t_1}\sqrt{\frac{\dot{u}^2+\dot{v}^2}{v^2}}dt=\int_{t_0}^{t_1}\frac{1}{t}dt=\ln{t_1}-\ln{t_0}
+\]
+\item 아님:$\gamma(u(t),v(t))=(u_0+r\tanh{t},r\sech{t})$
+\begin{align*}
+s(t)&=\int_{t_0}^{t_1}\sqrt{\frac{\dot{u}^2+\dot{v}^2}{v^2}}dt\\
+&=\int_{t_0}^{t_1}\sqrt{\frac{r^2\sech^2{t}(\sech^2{t}+\tanh^2{t})}{r^2\sech^2{t}}}dt\\
+&=\int_{t_0}^{t_1}1dt=t_1-t_0\\
+&=\cosh^{-1}(\cosh(t_1-t_0))\\
+&\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!%
+=\cosh^{-1}\left(1+\frac{(u(t_1)-u(t_0))^2+(v(t_1)-v(t_0))^2}{2v(t_0)v(t_1)}\right)
+\end{align*}
+\end{enumerate}
+두 벡터 $w_1,w_2$가 이루는 각은 다음과 같이 구할 수 있다.\[
+\theta=\cos^{-1}\left(\frac{w_{1u}w_{2u}+w_{1v}w_{2v}}{\sqrt{w_{1u}^2+w_{1v}^2}\sqrt{w_{2u}^2+w_{2v}^2}}\right)
+\]
+따라서 유클리드 평면에서의 각과 완전히 일치함을 알 수 있다.
+\end{tcolorbox}
+}%
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%           두번째 얼 : 비유클리드 기하학과 쌍곡평면              %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\column{0.4}
+\block{Lorentz 평면의 성질}{
+Lorentz 평면에서의 metric은 $ds^2=dx^2-dt^2$을 만족하며, PSD가 아니지만 두 점 사이의 거리를 $d=\sqrt{x^2-t^2}$의 형태로 간주할 수 있다. $(d\in \mathbb{C})$
+\begin{tcolorbox}[title=~~Lorentz 평면의 geodesic~~]
+$E,F,G$가 상수이므로 이에 대한 편미분값은 모두 0이다. 따라서
+\begin{align*}
+\null&\frac{d}{dp}(E\dot{x}+F\dot{t})=\frac{1}{2}(E_x\dot{x}^2+2F_x\dot{x}\dot{t}+G_x\dot{t}^2)\\
+\null&\frac{d}{dp}(F\dot{u}+G\dot{t})=\frac{1}{2}(E_t\dot{x}^2+2F_t\dot{x}\dot{t}+G_t\dot{t}^2)
+\end{align*}
+으로부터 $\Ddot{x}=0,\Ddot{t}=0$을 얻을 수 있고 geodesic은 $\gamma(p)=ax(p)t(p)+bx(p)+ct(p)+d$ ($a,b,c,d$는 상수)가 된다.
+\end{tcolorbox}
+}%
+%
+%
+%
+\block{3차원 Lorentz 공간과 쌍곡 평면의 isometry}{
+\begin{tikzpicture}
+
+\begin{axis}
+[view={210}{15},axis lines=center, xtick=\empty, ytick=\empty, ztick=\empty,
+xmin = -3, ymin = -3, zmin=-2, xmax = 3, ymax = 3, zmax=4, scale=2.2]
+
+
+\addplot3[domain = 0 : 1, y domain = 0 : 360,
+samples = 6, samples y = 20, mesh,
+draw = green!70!black, line width = 0.7pt]
+({x*3/4*cos(y)},{x*3/4*sin(y)},{x-1});
+
+\addplot3[domain = 0 : 360,
+samples = 20, fill=gray!20, line width = 0.7pt]
+({cos(x)},{sin(x)},{0});
+
+\addplot3[domain = 1 : 4, y domain = 15 : 195,
+samples = 16, samples y = 11, mesh,
+draw = green!70!black, line width = 0.7pt]
+({x*3/4*cos(y)},{x*3/4*sin(y)},{x-1});
+
+\addplot3[domain = -5 : 5, y domain = -5 : 5,
+samples = 21, samples y = 21, mesh,
+draw = red!70, line width = 0.7pt]
+({x},{y},{sqrt(x^2+y^2+1)});
+
+\addplot3[domain = 1 : 4, y domain = 195 : 375,
+samples = 16, samples y = 11, mesh,
+draw = green!70!black, line width = 0.7pt]
+({x*3/4*cos(y)},{x*3/4*sin(y)},{x-1});
+\end{axis}
+
+%
+%
+%
+
+\draw[ultra thick, fill=gray!20] (25,0) circle [radius=4];
+\draw[->] (20,0) -- (30,0) node [right] {$x$};
+\draw[->] (25,-5) -- (25,5) node [right] {$y$};
+\draw[blue!50, ultra thick] (29,0) arc (270 : 210 : 1.732*4);
+\draw[blue!50, ultra thick] (29,0) arc (270 : 180 : 4);
+\draw[blue!50, ultra thick] (29,0) arc (270 : 120 : 1.1);
+\draw[blue!50, ultra thick] (21,0) -- (29,0);
+\draw[blue!50, ultra thick] (29,0) arc (90 : 150 : 1.732*4);
+\draw[blue!50, ultra thick] (29,0) arc (90 : 180 : 4);
+\draw[blue!50, ultra thick] (29,0) arc (90 : 240 : 1.1);
+
+%
+%
+%
+
+\draw[fill=gray!20,draw=none] (3,-10) rectangle (17,-3);
+\draw[->] (3,-10) -- (17,-10) node [right] {$x$};
+\draw[->] (10,-10) -- (10,-3) node [below right] {$y$};
+\foreach \i in {-4,-2,-1,0,1,2,4}
+\draw[blue!50, ultra thick] (\i+10,-10) -- (\i+10,-3);
+
+%
+%
+%
+
+\draw[line width = 0.213em, <-] (17,10) arc (90 : 40 : 10);
+\node[right] at (21,10) {$\sigma(u,v)=\frac{(2u,2v,1+u^2+v^2)}{1-u^{2}-v^{2}}$};
+
+\draw[line width = .213em, ->] (17,9) arc (90 : 40 : 9);
+\node[left] at (22,6.5) {$\pi(x,y,t)=(\frac{x}{1+t},\frac{y}{1+t})$};
+
+%
+%
+%
+
+\draw[line width = .214em, <->] (22.5,-4) arc (-15 : -90 : 4);
+\node[right] at (20,-8) {$f(z)=\frac{z-i}{z+i},~f^{-1}(z)=\frac{-iz-i}{z-1}$};
+
+%
+%
+%
+
+\end{tikzpicture}
+}
+%
+%
+%
+%
+\block{쌍곡 평면과 3차원 Lorentz 공간의 관계}{
+3차원 Lorentz 공간 $\mathbb{L}^{3}$는 다음과 같이 정의된다:\[
+\mathbb{L}^{3}=\{(x,y,t)\in\mathbb{R}^3:ds^2=dx^2+dy^2-dt^2\}.
+\]
+여기에서 원점과의 거리가 $i$이면서 $t>0$인 $\mathbf{H}$는 위의 붉은 쌍곡면이다. 이를 $(0,0,-1)$을 기준으로 $xy-$plane에 사영을 하면 이는 $B_1(0,0)$ 에 들어가게 되고 이를 $(u,v)$로 두었을 때 다음과 같이 $\sigma$가 정의된다.\[
+(x,y,t)=\sigma(u,v)=\left( \frac{2u}{1-u^{2}-v^{2}}, \frac{2v}{1-u^{2}-v^{2}}, \frac{1+u^{2}+v^{2}}{1-u^{2}-v^{2}} \right)
+\]
+이를 통해 $u$와 $v$로 미분을 하면 다음과 같은 식이 나온다:%
+\begin{align*}
+\sigma_u &= \frac{2}{(1-u^{2}-v^{2})^{2}}(1+u^{2}-v^{2},2uv,2u),\\
+\sigma_v &= \frac{2}{(1-u^{2}-v^{2})^{2}}(2uv,1-u^{2}+v^{2},2v).
+\end{align*}
+이를 통해 $E,F,G$를 구하면 다음과 같이 나온다:\[
+E=\frac{4}{(1-u^{2}-v^{2})^{2}},~F=0,~G=\frac{4}{(1-u^{2}-v^{2})^{2}}
+\]
+$E,F,G$를 구할 때 로렌츠 공간의 metric을 적용하여 구함에 유의하자. 
+이 model은 Poincaré disk model이라고 불리우며, 앞에서 언급했던 Poincaré half-plane model과 자연스러운 isomorphism이 있다. 자세한 내용은
+\qrcode[height=2.718cm]{https://planetmath.org/convertingbetweenthepoincarediscmodelandtheupperhalfplanemodel}을 보면 알 수 있다.
+}
+\block{Lorentz 평면(공간)을 통한 시공간의 표현}{
+    특수 상대성 이론에서 시공간을 Lorentz 평면(공간)의 형태로 표현하며, 벡터($\overrightarrow{v}$)들을 원점으로부터의 거리로 다음과 같이 구분한다.
+    \begin{itemize}
+        \item light-like vector ($d(0,\overrightarrow{v})=0$)
+        \item space-like vector ($d(0,\overrightarrow{v})>0$)
+        \item time-like vector ($d(0,\overrightarrow{v})<0$)
+    \end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%          세번쨰 열열 : 비유클리드 기하학과 쌍곡평면               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\column{0.3}
+\block{등속 운동에서의 상대적 속도}{
+    관찰자 $O$와 $O$에서 등속도로 멀어지고 있는 관찰자 $\bar{O}$를 설정하면 $O$의 시각에서 $O$, $\bar{O}$가 관찰한 사건 p의 위치와 시간은 각각 $x(p), t(p)$ and $\bar{x}(p), \bar{t}(p)$로 표현될 수 있다.
+
+    \begin{tcolorbox}[title=~~특수 상대성 이론에서의 가정~~\null]
+    \begin{enumerate}
+        \item 모든 관성계는 동등하다.
+        \item 빛의 속도는 일정하다.
+    \end{enumerate}
+    \end{tcolorbox}
+    첫번째 가정에 의해서 두 관성계 사이에는 metric을 보존하는 변환이 존재하는데, 따라서 우리는 이 변환을 Poincaré 변환으로로 생각할 수 있다..
+    \begin{tcolorbox}[title=~~$O$가 보는 $\bar{O}$의 속력~~\null]
+    $\alpha = \beta = 1$인 특수 Lorentz 변환은 다음과 같다:
+    \[
+        \begin{bmatrix}
+            \bar{x}(p)\\\bar{t}(p)
+        \end{bmatrix} = 
+        \begin{bmatrix}
+            \cosh{\phi} & -\sinh{\phi}\\
+            -\sinh{\phi} & \cosh{\phi}
+        \end{bmatrix}
+        \begin{bmatrix}
+            x(p) \\ t(p)
+        \end{bmatrix}, \quad \phi \in \mathbb{R}
+    \]
+    
+    $\bar{O}$의 궤적을 매개변수 $s$로 나타내면, $\bar{x}(s) = 0$, $\bar{t}(s) = s$이다.
+    
+     \[
+        \begin{bmatrix}
+            x(p) \\ t(p)
+        \end{bmatrix} =
+        \begin{bmatrix}
+            \cosh{\phi} & \sinh{\phi}\\
+            \sinh{\phi} & \cosh{\phi}
+        \end{bmatrix}
+        \begin{bmatrix}
+            0 \\ s
+        \end{bmatrix}
+    \]
+    
+    $x(s) = \sinh{\phi} \cdot s$, $t(s) = \cosh{\phi} \cdot s$이므로, $O$가 보는 $\bar{O}$의 속력은 $v = \tanh{\phi}$이다.
+    \end{tcolorbox} 
+}
+\block{특수 상대성 이론의 주요 사실}{
+\begin{enumerate}
+    \item 모든 입자의 속력은 1보다 작다.($|\!|\tanh(\phi)|\!|<1$)
+    \item 빛의 속력은 모든 관성계에서 1이다.($dx^2-dt^2=0$)
+    \item 한 관찰자의 입장에서 동시에 일어난 다른 위치에서의 사건이 다른 관찰자의 입장에서는 동시에 일어나지 않을 수 있다.
+    \item 한 관찰자의 입장에서 같은 장소에서 시차를 두고 발생한 두 사건이 다른 관찰자 입장에서 더 긴 시차를 두고 다른 장소에서 발생한 사건으로 인식된다.
+    \item 한 관찰자 입장에서 같은 시간에 발생한 서로 다른 위치에서의 사건 사이의 거리가 다른 관찰자 입장에서는 $\sqrt{1-v^2}$배로 감소되어 보인다.
+\end{enumerate}
+
+}
+\block{참조}{
+De Risi, V. The development of Euclidean axiomatics. Arch. Hist. Exact Sci. 70, 618p (2016). \url{https://doi.org/10.1007/s00407-015-0173-9}
+
+\url{http://newton.kias.re.kr/~kuessner/buch/HypGeom.pdf}
+
+Virginie Charette, Todd A. Drumm, Dieter Brill,
+Closed time-like curves in flat Lorentz space–times,
+Journal of Geometry and Physics,
+Volume 46, Issues 3–4,
+2003,
+Pages 394-408,
+ISSN 0393-0440,
+\url{https://doi.org/10.1016/S0393-0440(02)00153-5}
+
+
+양성덕의 미분 기하 강의 1편
+}
+%
+%
+%
+\end{columns}
+\end{document} 
+
+\begin{tcolorbox}[title=~~name_here~~\null]
+%text here
+\end{tcolorbox}
+
+
+
+\block{Lorentz 변환과 Poincaré 변환}{
+    $\alpha, \beta$가 $-1$ 또는 $1$일때, Lorentz 변환은
+    $
+    \begin{bmatrix}
+    \alpha\cosh{\phi} & -\alpha\sinh{\phi}\\
+    -\beta\sinh{\phi} & \beta\cosh{\phi}
+    \end{bmatrix}
+    $
+    이며 Poincaré 변환은 
+    $
+    \begin{bmatrix}
+    x'\\t'
+    \end{bmatrix}
+    =M
+    \begin{bmatrix}
+    x\\t
+    \end{bmatrix}
+    +
+    \begin{bmatrix}
+    x_0\\t_0
+    \end{bmatrix}
+    $\\[1em]
+    를 이용해 $x,t$ 를 $x',t'$으로 변환시키는 변환이다.($M$은 Lorentz 변환). 이때 Poincaré 변환은 Lorentz 평면의 내적의 형태를 유지한다.
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\block{쌍곡 평면은 로렌츠 공간에 있는 어떤 곡면의 지도다}{
+\begin{tcolorbox}[title=~~로렌츠 공간의 내적~~]
+로렌츠 공간 $\mathbb{L}^{3}$의 점은 $(x, y, t)$로, 계량기는 $dx^{2} + dy^{2} - dt^{2}$로 나타낸다.
+$$\mathbb{L}^{3} = \{(x, y, t) \in \mathbb{R}^{3} : ds^{2} = dx^{2} + dy^{2} - dt^{2}\}$$
+여기에서 $(x_{1}, y_{1}, t_{1})_{p}$ 와 $(x_{2},y_{2},t_{2})_{p}$의 내적이 다음과 같음을 알 수 있다.
+$$
+(x_{1},y_{1},t_{1})_{p}\circ(x_{2},y_{2},t_{2})_{p}=x_{1}x_{2}+y_{1}y_{2}-t_{1}t_{2}
+$$
+\end{tcolorbox}
+
+%사실 우리가 살고 있는 공간은 3차원이기 때문이기 때문에 1차원의 시간까지 더한 4차원 $xyzt$ 로렌츠 공간으로 기술이 되는데 그 경우 계량기는 $dx^{2}+dy^{2}+dz^{2}-dt^{2}$이다. 차원이 높아짐에 따라 이론이 더 풍부해지는데 우리는 3차원 로렌츠 공간과 쌍곡 평면 사이의 관계를 알아보는 것까지만 다루기로 한다.% - 이건 없애도 되지 않을까 ㄹㅇ
+
+쌍곡평면의 쌍곡면 모델
+
+3차원 유클리드 공간에 들어 있는 2차원 구는 원점으로부터의 거리가 1인 점들의 집합임을 상기하라. 이와 유사한 맥락에서 3차원 로렌츠 공간에서 원점으로부터의 거리가 $i$인 점들의 집합, 즉,
+$$
+d ((x, y, t), (0, 0, 0)) = \sqrt{ (x - 0)^{2} + (y - 0)^{2} - (t - 0)^{2} } = i
+$$
+을 생각하라. 이는 다음 방정식을 만족하는 점 $(x, y, t)$의 집합과 같다. 
+$$
+x^{2} + y^{2} - t^{2} = -1.
+$$
+이는 이엽 쌍곡면이 된다.
+
+이 중에서 상반엽(上半葉), 즉 $t$가 0보다 큰 부분을 $\mathrm{H}$라 하자. 즉, $$\mathrm{H} := {(x, y, t) \in \mathbb{L}^{3} : x^{2} + y^{2} - t^{2} = -1, t > 0}$$
+
+쌍곡평면의 원반모델을 입체사영으로 얻어내기
+
+이 때 임의의 점 $P (x, y, t) \in \mathrm{H}$와 남극점 $(0, 0, -1)$을 잇는 직선은 $xy$ 평면과 반드시 단 한 점 $Q(u, v)$에서 만난다. 유클리드 공간에서처럼, 이렇게 $P$에 $Q$를 대응시키는 관계 또한 입체 사영이라 하고 $\Pi$로 나타낸다.
+
+정리 8.8.1. 다음이 성립한다. 
+\begin{align*}
+(u,v) &= \Pi(x,y,t) = \left( \frac{x}{1+t}, \frac{y}{1+t} \right) \\
+(x,y,t) &= \Pi^{-1}(u,v) = \left( \frac{2u}{1-u^{2}-v^{2}}, \frac{2v}{1-u^{2}-v^{2}}, \frac{1+u^{2}+v^{2}}{1-u^{2}-v^{2}} \right)
+\end{align*}
+증명. 로렌츠 공간에서 관련 도형들을 $xt$ 평면, $yt$ 평면으로 사영시키면 다음과 같다.
+각 그림에서 관련된 삼각형들의 비례 관계에서 쉽게 식 $\frac{x}{1+t}=\frac{u}{1} = u$, $\frac{y}{1+t}=\frac{v}{1} = v$를 얻는다. 두 번째 식을 얻으려면 이를 $x^{2}-t^{2}=-1$과 연립하여 풀어 $t = \frac{1+u^{2}}{1-u^{2}}$를 얻고 다른 식은 나머지로부터 얻는다.
+
+위 식을 3차원 유클리드 공간 속의 구를 평면으로 보내는 입체 사영과 비교하여 보라. $\Pi$는 상반엽을 단위 원반과 일대일대응시킨다. 따라서 단위 원반은 상반엽을 나타내는 지도가 된다. 이때 계량기는 어떻게 표현되는지 알아보자.
+
+정리 8.8.2. 계량기는 $\frac{4(du^{2}+dv^{2})}{(1-u^{2}-v^{2})^{2}}$, 즉 쌍곡 평면의 단위 원반 모델에 주어진 계량기와 같다.
+
+증명. 먼저 이엽 쌍곡면의 윗부분을 다음 함수의 이미지로 생각하자.
+\[
+\boldsymbol{X}(u,v) = \left( \frac{2u}{1-u^{2}-v^{2}}, \frac{2v}{1-u^{2}-v^{2}}, \frac{1+u^{2}+v^{2}}{1-u^{2}-v^{2}} \right), u^{2}+v^{2}<1
+\]
+따라서
+\begin{align*}
+\boldsymbol{X}_{u}(u,v) &= \frac{2}{(1-u^{2}-v^{2})^{2}}(1+u^{2}-v^{2},2uv,2u) \\
+\boldsymbol{X}_{v}(u,v) &= \frac{2}{(1-u^{2}-v^{2})^{2}}(2uv,1-u^{2}+v^{2},2v)
+\end{align*}
+여기서 3차원 로렌츠 공간의 내적을 이용하면
+\[
+{<}\boldsymbol{X}_{u}, \boldsymbol{X}_{u}{>}_{\mathbb{L}^{3}} = {<}\boldsymbol{X}_{v}, \boldsymbol{X}_{v}{>}_{\mathbb{L}^{3}} = \frac{4}{(1-u^{2}-v^{2})^{2}}, {<}\boldsymbol{X}_{u}, \boldsymbol{X}_{v}{>}_{\mathbb{L}^{3}} = 0
+\]
+그러므로 
+\begin{align*}
+ds^{2} &= {<}d\boldsymbol{X}, d\boldsymbol{X}{>}_{\mathbb{L}^{3}} \\
+&= {<}\boldsymbol{X}_{u}, \boldsymbol{X}_{v}{>}_{\mathbb{L}^{3}}du^{2} + 2{<}\boldsymbol{X}_{u}, \boldsymbol{X}_{v}{>}_{\mathbb{L}^{3}}dudv + {<}\boldsymbol{X}_{v},\boldsymbol{X}_{v}{>}_{\mathbb{L}^{3}}dv^{2} \\
+&= \frac{4(du^{2}+dv^{2})}{(1-u^{2}-v^{2})^{2}}
+\end{align*}
+
+이 정리는, 쌍곡 평면의 원반 모델이 3차원 로렌츠 공간 속에 들어 있는 이엽 쌍곡면의 상반엽에 대한 지도라고 말하고 있다. 쌍곡 평면의 상반 평면 모델은 원반 지도를 상반 평면 지도로 바꾼 것이다. 이러한 맥락에서, 3차원 로렌츠 공간 속에 들어 있는 $\mathrm{H}$는 3차원 유클리드 공간속에 들어 있는 구와 대응 관계에 있다고 할 수 있다.
+
+중심사영을 통하여 쌍곡평면의 벨트라미-클라인 모델 얻어내기
+
+중심 사영 $$
+\Pi : \mathrm{H}\subset \mathbb{L}^{3} \to \{(x,y,t)\in\mathbb{L}^{3}:t=1\}, (x,y,t)\mapsto\left( \frac{x}{t}, \frac{y}{t}, 1 \right)
+$$은 $\mathrm{H}$를 평면 $t=1$에 있는 단위원반으로 보낸다. 편의상 $$
+(u,v)=\left( \frac{x}{t}, \frac{y}{t} \right)
+$$라고 하면, $-1=x^{2}+y^{2}-t^{2}$까지 이용하여, 다음을 얻는다.
+$$
+(x,y,t)=\frac{(u,v,1)}{\sqrt{ 1-u^{2}-v^{2} }}
+$$
+이렇게 해서 쌍곡평면의 쌍곡면 모델에 대한 곡면함수 $$
+\boldsymbol{X}(u,v) = \frac{(u,v,1)}{\sqrt{ 1-u^{2}-v^{2} }}, \text{ 단 } u^{2}+v^{2}<1
+$$를 얻는데 이 경우 계량기를 계산하여 얻어지는 $uv$ 지도는 쌍곡평면의 벨트라미-클라인 모델이다. [38]을 참조하라.
+연습문제 8.8.3. 다음 문제를 풀어 보자.
+1. 계량기를 실제로 계산해 보아라.
+2. 벨트라미-클라인 모델의 특징을 알아보아라.
+
+상반평면모델을 중심사영으로 얻어내기
+먼저 3차원 로렌쯔 공간에 다음과 같은 새 좌표계를 설정하자.$$
+\alpha=t+x,\ \ \ \beta=t-x, \ \ \ y=y
+$$그러면 쌍곡평면의 방정식은 다음과 같다. $$
+\mathrm{H} = \{(\alpha,\beta,y)\in\mathbb{L}^{3}|\alpha \beta=y^{2}+1\}
+$$
+이제 $\Pi_{\alpha_{0}}:=\{(\alpha,\beta,y)\in\mathbb{L}^{3}|\alpha=\alpha_{0}\}$라고 하면 $H^{2}$를 $\Pi_{\alpha_{0}}$로 자른 단면에 있는 점들은 다음 식을 만족시킨다.
+$$
+\alpha = \alpha_{0}, \ \ \ \beta = \alpha_{0}^{-1}(y^{2}+1)
+$$
+이 점들은 포물선이 됨에 주목하라.
+이제 점 $(\alpha,\beta,y)=(0,0,0)$에서 뻗어나오는 직선을 이용하여 공간의 점을 평면 $\Pi_{1}$으로 보내는 중심사영을 $\Phi$라 하면 $$
+\Phi(\alpha,\beta,y) = \left( 1, \frac{\beta}{\alpha}, \frac{y}{\alpha}  \right)
+$$ $\Phi$에 의하여 위 곡선은 다음과 같이 변한다.
+$$
+\alpha=1, \ \ \ \beta = y^{2}+\alpha_{0}^{-2}
+$$
+편의상 위 식을 다음과 같이 쓰자.
+$$
+\{(Y,B)|B=Y^{2}+\alpha_{0}^{-2}\}. (8.14)
+$$
+이는 $YB$ 평면에서 포물선이다. 이 포물선을 곧게 펴 보자. 그러기 위하여 다음과 같이 $u, v$를 정의한다.
+$$
+u = Y,\ \ \ v=\sqrt{ B-Y^{2} }. (8.15)
+$$
+그러면 식 (8.14)로 주어진 포물선은 $uv$ 평면의 수평선 $v=\alpha_{0}^{-1}$에 해당한다.
+변환 (8.14)는 역변환을 가지며 그 식은 다음과 같다:
+$$Y = u, \ \ \ B = u^{2} + v^{2}$$
+이는 $uv$ 반평면 (즉 $v > 0$)에 있는 수평선 $v = \alpha_{0}^{-1}$을 $YB$ 평면의 포물선 $B = Y^{2} + \alpha_{0}^{-1}$으로 보내며 이는 $\mathbb{L}^{3}$의 평면 $\Pi_{1}$에 있는 포물선 $\beta = y^{2} + \alpha_{0}^{-2}$와 같다. 이를 중심사영을 역으로 적용하여 $\Pi_{\alpha_{0}}$에 있는 점으로 보내면 $\beta=\alpha_{0}^{-1}(y^{2}+1)$을 만족시키는 포물선이 된다.
+이를 모두 합성하면 $(u,v)$를 $\mathrm{H}$의 점 $(\alpha,\beta,y)=\left( \frac{1}{v},v+\frac{1}{v}u^{2}, \frac{u}{v} \right) = \frac{(1,u^{2}+v^{2},u)}{v}$로 보내는 변환을 얻는다. 이는 $txy$ 좌표로는 다음과 같다.
+\begin{align*}
+x &= \frac{\alpha-\beta}{2} = \frac{v^{-1}-v-v^{-1}u^{2}}{2} \\
+y &= \frac{u}{v} \\
+t &= \frac{\alpha+\beta}{2} = \frac{v^{-1}+v+v^{-1}u^{2}}{2}
+\end{align*}
+즉, $H^{2}$는 다음과 같은 매개식을 가진다.
+$$
+X(u,v) := (x,y,t) = \left( \frac{v^{-1}-v-v^{-1}u^{2}}{2}, \frac{u}{v}, \frac{v^{-1}+v+v^{-1}u^{2}}{2}\right)
+$$
+이 매개식의 계량기를 계산하면 다음과 같다.
+$$
+ds^{2}=\frac{du^{2}+dv^{2}}{v^{2}}
+$$
+
+}%
